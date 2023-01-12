@@ -213,7 +213,7 @@ csv = ConvertDF(df)
 if st.button("Submit"):
     # show dataframe
     st.markdown("---")
-    st.write(f"Result of {title} data: ")
+    st.write(f"Result of {title} data in table form: ")
     st.dataframe(df)
 
     # show download csv
@@ -229,8 +229,9 @@ if st.button("Submit"):
     st.write("")
 
     # Show chart
-    st.plotly_chart(fig)
+    st.write(f"Result of {title} data in candlestick chart form: ")
     st.caption("To download the chart, click on the camera icon on the top-right side of the chart")
+    st.plotly_chart(fig)
 
 
 ### ====== ###
@@ -238,4 +239,5 @@ if st.button("Submit"):
 ### ====== ###
 
 st.markdown("***")
+st.write("Thank you for using this Forex Data Generator on Streamlit!")
 st.write("Link to github code: https://github.com/agnes-septilia/streamlit_forex_data.git")
