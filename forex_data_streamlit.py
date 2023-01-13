@@ -1,16 +1,22 @@
 import streamlit as st
+st.set_page_config(layout="centered")
+
 
 ### ============ ###
 ### INTRODUCTION ###
 ### ============ ###
+
+st.caption("created by agnes_septilia")
+st.write("")
 
 st.markdown("<h1 style='text-align: center; color: black;'>FOREX DATA GENERATOR</h1>", unsafe_allow_html=True)
 
 st.markdown("***")
 st.markdown("<h3 style='text-align: center; color: black;'>Welcome to Forex Data Generator!</h3>", unsafe_allow_html=True)
 st.write("")
-st.write("In this project, we use the data from Forex API source: https://twelvedata.com/")
-st.write("Input the parameters, then click 'Submit' to run the program, see the chart, and download the data.")
+st.write("In this project, you can generate Forex data in a Table or Candlestick chart form.")
+st.write("Simply input the parameters you need, then click 'SUBMIT' button to proceed.") 
+st.write("The data is taken from Forex API source: https://twelvedata.com/")
 st.markdown("***")
 st.write("")
 
@@ -26,7 +32,7 @@ import datetime
 # Import index file
 import user_index
 
-st.markdown("<h5 style='color: black;'>Input Parameters</h5>", unsafe_allow_html=True)
+st.markdown("<h5 style='text: bold; color: black, text-align: center;'>INPUT PARAMETERS</h5>", unsafe_allow_html=True)
 st.write("")
 
 
@@ -44,19 +50,16 @@ def UserParams(key, value):
     params += "&" + key + "=" + value
     return params
 
-# Get base currency input
-st.write("Choose Base Currency")
-user_base_symbol = st.selectbox("Choose Base Currency : ", user_index.symbol_base, index=6, label_visibility="collapsed")
-st.write("")
 
-# Get quote currency input, by eliminate the choice of base currency
-st.write("Choose Quote Currency")
-user_quote_symbol = st.selectbox("Choose Quote Currency : ", user_index.symbol_quote, index=6, label_visibility="collapsed")
+# Get user currency pair
+currency_pair_help = "If you want to search EUR/USD pair, then EUR is the base currency, and USD is the quote currency"
+user_base_symbol = st.selectbox("Choose Base Currency : ", user_index.symbol_base, index=6, help=currency_pair_help)
+user_quote_symbol = st.selectbox("Choose Quote Currency : ", user_index.symbol_quote, index=6, help=currency_pair_help)
 st.write("")
 
 # Create error if the base currency is the same as quote currency
 if user_base_symbol == user_quote_symbol:
-    st.error("The Quote Currency should be different than Base Currency!")
+    st.error("The Quote Currency should be different than Base Currency", icon="🚨")
     st.stop()
 
 # Assign currency pair to UserInputs and UserParams
@@ -66,23 +69,23 @@ UserParams("symbol", user_currency_pair)
 
 
 # Get interval input
-st.write("Choose Time Interval")
-user_interval = st.selectbox("Choose Time Interval : ", user_index.interval, label_visibility="collapsed")
+time_interval_help = "The unit of time between two data"
+user_interval = st.selectbox("Choose Time Interval : ", user_index.interval, help=time_interval_help)
 UserInputs("Time Interval", user_interval)
 UserParams("interval", user_interval)
 st.write("")
 
 
 # Get Output size
-st.write("Choose Output Size")
-user_output_size = st.slider("Choose Output Size : ", min_value=0, max_value=5000, step=200, label_visibility="collapsed")
+output_size_help = "Amount of data you want to fetch -- Maximum is 5000"
+user_output_size = st.slider("Choose Output Size : ", min_value=0, max_value=5000, step=200, help=output_size_help)
 UserInputs("Output Size", str(user_output_size))
 UserParams("outputsize", str(user_output_size))
 st.write("")
 
 # Create error if the Output Size is zero
 if user_output_size == 0:
-    st.error("The Output Size should be more than 0")
+    st.error("The Output Size should be more than 0", icon="🚨")
     st.stop()
 
 
@@ -115,12 +118,12 @@ else:
 if start_date_option == True and end_date_option == True:
     # Create error if the both start and end date is same
     if user_start_datetime == user_end_datetime:
-        st.error("Start Datetime cannot be the same as End Datetime")
+        st.error("Start Datetime cannot be the same as End Datetime", icon="🚨")
         st.stop()
         
     # Create error if start date is more than end date
     if user_start_datetime > user_end_datetime:
-        st.error("Start Datetime should be earlier than End Datetime")
+        st.error("Start Datetime should be earlier than End Datetime", icon="🚨")
         st.stop()
 
 
@@ -150,6 +153,7 @@ st.dataframe(pd.DataFrame(user_input, index=[0]).T.rename(columns={0:'value'}))
 
 # Get the API key from streamlit secret
 API_KEY = st.secrets["API_KEY"]
+
 # Hit the API through URL
 import requests
 
@@ -227,6 +231,7 @@ if st.button("Submit"):
     )
 
     st.write("")
+    st.write("")
 
     # Show chart
     st.write(f"Result of {title} data in candlestick chart form: ")
@@ -234,10 +239,10 @@ if st.button("Submit"):
     st.plotly_chart(fig)
 
 
-### ====== ###
-### EPILOG ###
-### ====== ###
-
-st.markdown("***")
-st.write("Thank you for using this Forex Data Generator on Streamlit!")
-st.write("Link to github code: https://github.com/agnes-septilia/streamlit_forex_data.git")
+    # Epilog
+    st.write("")
+    st.markdown("***")
+    st.write("Thank you for using this Forex Data Generator on Streamlit!")
+    st.write("Link to github code: https://github.com/agnes-septilia/streamlit_forex_data.git")
+    st.write("")
+    st.caption("created by agnes septilia")
