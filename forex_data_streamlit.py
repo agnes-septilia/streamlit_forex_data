@@ -6,7 +6,7 @@ st.set_page_config(layout="centered")
 ### INTRODUCTION ###
 ### ============ ###
 
-st.caption("created by agnes_septilia")
+st.caption("Copyright © 2023 by Agnes Septilia")
 st.write("")
 
 st.markdown("<h1 style='text-align: center; color: black;'>FOREX DATA GENERATOR</h1>", unsafe_allow_html=True)
@@ -59,7 +59,7 @@ st.write("")
 
 # Create error if the base currency is the same as quote currency
 if user_base_symbol == user_quote_symbol:
-    st.error("The Quote Currency should be different than Base Currency", icon="🚨")
+    st.error("The Quote Currency should be different than Base Currency", icon="🚫")
     st.stop()
 
 # Assign currency pair to UserInputs and UserParams
@@ -85,7 +85,7 @@ st.write("")
 
 # Create error if the Output Size is zero
 if user_output_size == 0:
-    st.error("The Output Size should be more than 0", icon="🚨")
+    st.error("The Output Size should be more than 0", icon="🚫")
     st.stop()
 
 
@@ -118,12 +118,12 @@ else:
 if start_date_option == True and end_date_option == True:
     # Create error if the both start and end date is same
     if user_start_datetime == user_end_datetime:
-        st.error("Start Datetime cannot be the same as End Datetime", icon="🚨")
+        st.error("Start Datetime cannot be the same as End Datetime", icon="🚫")
         st.stop()
         
     # Create error if start date is more than end date
     if user_start_datetime > user_end_datetime:
-        st.error("Start Datetime should be earlier than End Datetime", icon="🚨")
+        st.error("Start Datetime should be earlier than End Datetime", icon="🚫")
         st.stop()
 
 
@@ -145,13 +145,7 @@ st.dataframe(pd.DataFrame(user_input, index=[0]).T.rename(columns={0:'value'}))
 ### CONNECT TO TWELVEDATA API ###
 ### ========================= ###
 
-# Get the API key from local env
-# import os
-# from dotenv import load_dotenv
-# load_dotenv()
-# API_KEY = os.getenv('API_KEY')   
-
-# Get the API key from streamlit secret
+# Get the API key from streamlit secret --> for local, put secrets as .toml file
 API_KEY = st.secrets["API_KEY"]
 
 # Hit the API through URL
@@ -245,4 +239,5 @@ if st.button("Submit"):
     st.write("Thank you for using this Forex Data Generator on Streamlit!")
     st.write("Link to github code: https://github.com/agnes-septilia/streamlit_forex_data.git")
     st.write("")
-    st.caption("created by agnes septilia")
+    st.caption("Copyright © 2023 by Agnes Septilia")
+
